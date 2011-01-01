@@ -155,6 +155,9 @@ class GraphAPI(object):
         """Deletes the object with the given ID from the graph."""
         self.request(id, post_args={"method": "delete"})
 
+    def _urlopen(self, url, data=None, proxies=None):
+        return urllib.urlopen(url, data, proxies)
+
     def request(self, path, args=None, post_args=None):
         """Fetches the given path in the Graph API.
 
@@ -168,8 +171,8 @@ class GraphAPI(object):
             else:
                 args["access_token"] = self.access_token
         post_data = None if post_args is None else urllib.urlencode(post_args)
-        file = urllib.urlopen("https://graph.facebook.com/" + path + "?" +
-                              urllib.urlencode(args), post_data)
+        file = self._urlopen("https://graph.facebook.com/" + path + "?" +
+                             urllib.urlencode(args), post_data)
         try:
             response = _parse_json(file.read())
         finally:
