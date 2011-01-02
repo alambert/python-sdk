@@ -159,6 +159,7 @@ class GraphAPI(object):
         result = urllib.urlopen(url, data, proxies)
         if result.getcode() != 200:
             raise Exception(result.getcode(), url)
+        return result
 
     def request(self, path, args=None, post_args=None):
         """Fetches the given path in the Graph API.
