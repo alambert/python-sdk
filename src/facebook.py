@@ -156,7 +156,9 @@ class GraphAPI(object):
         self.request(id, post_args={"method": "delete"})
 
     def _urlopen(self, url, data=None, proxies=None):
-        return urllib.urlopen(url, data, proxies)
+        result = urllib.urlopen(url, data, proxies)
+        if result.getcode() != 200:
+            raise Exception(result.getcode(), url)
 
     def request(self, path, args=None, post_args=None):
         """Fetches the given path in the Graph API.
